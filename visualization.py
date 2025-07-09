@@ -31,11 +31,13 @@ def create_tax_breakdown_chart(tax_result):
     ]
     
     # Filter zero values for a clean chart
-    components, values = zip(*((c, v) for c, v in zip(components, values) if v > 0))
+    non_zero_components = [(c, v) for c, v in zip(components, values) if v > 0]
     
-    if not components:
-        st.info("No tax liability to display.")
+    if not non_zero_components:
+        st.success("🎉 Congratulations! No tax liability due to Section 87A rebate or zero taxable income.")
         return None
+    
+    components, values = zip(*non_zero_components)
     
     fig = px.pie(
         names=components,
@@ -520,6 +522,19 @@ def display_visualizations(income_details, tax_result, employment_type, fy_ay):
     
     # Tax summary table
     display_tax_summary_table(tax_result)
+    
+    # Special handling for zero tax cases
+    if tax_result['total_tax'] == 0:
+        st.success("🎉 Excellent! You have no tax liability for FY 2025-26!")
+        st.info("📊 Your income falls within the tax-free limit or is fully covered by Section 87A rebate.")
+        
+        # Show a simple visualization for zero tax case
+        col1, col2 = st.columns(2)
+        with col1:
+            st.metric("Your Tax Savings", f"Rs. {tax_result['rebate_87a']:,.0f}", "Thanks to Section 87A rebate")
+        with col2:
+            st.metric("Net Take-home", f"Rs. {tax_result['taxable_income']:,.0f}", "100% of taxable income")
+        return
     
     # Create a three-column layout
     col1, col2, col3 = st.columns(3)
