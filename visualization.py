@@ -156,7 +156,6 @@ def create_tax_slab_progression_chart(tax_result):
     # Create subplot with secondary y-axis
     fig = make_subplots(
         rows=1, cols=1,
-        secondary_y=True,
         specs=[[{"secondary_y": True}]]
     )
     
