@@ -43,7 +43,7 @@ with st.form(key='personal_info'):
     st.header("1. Personal Information")
     age_group = st.selectbox("Select Age Group", options=["Below 60", "60 and above", "80 and above"])
     residential_status = st.radio("Residential Status", options=["Resident", "Non-Resident"], help="Are you living in India?")
-    fy_ay = st.selectbox("Financial Year / Assessment Year", options=["FY 2024-25 / AY 2025-26", "FY 2025-26 / AY 2026-27"], index=0, help="Choose the applicable financial year")
+    fy_ay = st.selectbox("Financial Year / Assessment Year", options=["FY 2025-26 / AY 2026-27"], index=0, help="Choose the applicable financial year")
     employment_type = st.selectbox("Employment Type", options=["Salaried", "Freelancer", "Business", "Rental", "Investor", "Mixed"], help="Select your source of income")
     
     submit_info = st.form_submit_button(label='Submit Profile')

@@ -54,20 +54,30 @@ def get_smart_tips(income_details, tax_result, fy_ay, employment_type):
                 "category": "investment"
             })
     
-    # Capital gains threshold tip
+    # Capital gains threshold tip (Updated for 2025-26)
     ltcg = income_details.get('ltcg', 0)
-    if ltcg > 100000:
+    stcg = income_details.get('stcg', 0)
+    
+    if stcg > 0:
+        tips.append({
+            "icon": "📊",
+            "title": "STCG Tax Applicable",
+            "description": f"Your STCG of {format_indian_currency(stcg)} will be taxed at 20% (updated rate for 2025-26).",
+            "category": "capital_gains"
+        })
+    
+    if ltcg > 125000:
         tips.append({
             "icon": "📈",
             "title": "LTCG Tax Applicable",
-            "description": f"Your LTCG of {format_indian_currency(ltcg)} exceeds Rs. 1,00,000. Tax of 10% applies on gains above Rs. 1L.",
+            "description": f"Your LTCG of {format_indian_currency(ltcg)} exceeds Rs. 1,25,000. Tax of 12.5% applies on gains above Rs. 1.25L (updated rates for 2025-26).",
             "category": "capital_gains"
         })
-    elif ltcg > 0 and ltcg <= 100000:
+    elif ltcg > 0 and ltcg <= 125000:
         tips.append({
             "icon": "✅",
             "title": "LTCG Within Exemption Limit",
-            "description": f"Your LTCG of {format_indian_currency(ltcg)} is within the Rs. 1,00,000 exemption limit. No tax applicable!",
+            "description": f"Your LTCG of {format_indian_currency(ltcg)} is within the Rs. 1,25,000 exemption limit (updated for 2025-26). No tax applicable!",
             "category": "capital_gains"
         })
     
@@ -100,14 +110,13 @@ def get_smart_tips(income_details, tax_result, fy_ay, employment_type):
             "category": "deduction"
         })
     
-    # New regime benefits
-    if fy_ay == "FY 2025-26 / AY 2026-27":
-        tips.append({
-            "icon": "🎯",
-            "title": "Budget 2025 Benefits",
-            "description": "You're benefiting from increased tax-free limit (Rs. 4L), higher rebate limit (Rs. 12L), and maximum rebate (Rs. 60K).",
-            "category": "regime"
-        })
+    # New regime benefits for 2025-26
+    tips.append({
+        "icon": "🎯",
+        "title": "Budget 2025 Benefits",
+        "description": "You're benefiting from the new tax slabs: 0% up to Rs. 4L, 5% on 4-8L, 10% on 8-12L, 15% on 12-16L, 20% on 16-20L, 25% on 20-24L, and 30% above 24L. Higher rebate limit (Rs. 12L) and maximum rebate (Rs. 60K) also apply.",
+        "category": "regime"
+    })
     
     return tips
 
